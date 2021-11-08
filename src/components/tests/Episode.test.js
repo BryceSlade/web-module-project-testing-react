@@ -24,19 +24,16 @@ const testEpisodeWithoutImage = {
 
 test("renders without error", () => {
     render(<Episode  episode={testEpisode}/>)
-    // console.log(testEpisode)
 });
 
 test("renders the summury test passed as prop", ()=>{
     render(<Episode  episode={testEpisode.summary}/>)
-    // console.log(testEpisode.summary)
 });
 
 test("renders default image when image is not defined", ()=>{
     render(<Episode  episode={testEpisodeWithoutImage}/>)
     const image = screen.queryByAltText('./stranger_things.png')
     expect(image).toBeInTheDocument()
-    console.log(image)
 })
 
 //Tasks
