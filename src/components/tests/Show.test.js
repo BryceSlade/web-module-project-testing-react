@@ -21,26 +21,33 @@ test('renders testShow and no selected Season without errors', ()=>{
 
 test('renders Loading component when prop show is null', () => {
     render(<Show show={null} />)
-    
-    const loading = screen.queryByText(/Fetching data.../i)
-
+    const loading = screen.queryByTestId('loading-container')
     expect(loading).toBeInTheDocument()
 });
 
 test('renders same number of options seasons are passed in', ()=>{
     render(<Show show={testShow} selectedSeason={'none'}/>)
-
-    const dropdown = screen.queryByRole('select')
-
-    expect(dropdown).toBeInTheDocument()
+    const seasons = screen.queryAllByTestId('season-option')
+    expect(seasons).toHaveLength(4)
 });
 
 test('handleSelect is called when an season is selected', () => {
+    const handleSelect = jest.fn()
+    render(<Show show={testShow} selectedSeason={'none'} handleSelect={handleSelect}/>)
+    const select = getByLabelText(/Select a Season/i)
+    userEvent.selectOptions(select, ['1'])
 
+    expect(handleSelect).toBeCalled();
 });
 
 test('component renders when no seasons are selected and when rerenders with a season passed in', () => {
+    const { rerender } = render(<Show show={testShow} selectedSeason={'none'}/>)
+    let episodes = screen.queryByTestId('episodes-container')
+    expect(episodes).not.toBeInTheDocument()
 
+    rerender(<Show show={testShow} selectedSeason={1}/>)
+    let episodes = screen.queryByTestId('episodes-container')
+    expect(episodes).toBeInTheDocument()
 });
 
 //Tasks:
